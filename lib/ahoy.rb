@@ -87,6 +87,12 @@ module Ahoy
     end
   end
 
+  def self.include_helpers
+    ActiveSupport.on_load(:action_controller) do
+      include Ahoy::Controller
+    end
+  end
+
   # deprecated
 
   mattr_accessor :domain
@@ -101,8 +107,7 @@ module Ahoy
   self.track_bots = false
 end
 
-ActionController::Base.send :include, Ahoy::Controller
-ActiveRecord::Base.send(:extend, Ahoy::Model) if defined?(ActiveRecord)
+ActiveRecord::Base.extend Ahoy::Model if defined?(ActiveRecord)
 
 # ensure logger silence will not be added by activerecord-session_store
 # otherwise, we get SystemStackError: stack level too deep

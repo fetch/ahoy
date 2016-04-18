@@ -1,5 +1,10 @@
 module Ahoy
   class Engine < ::Rails::Engine
+
+     initializer "ahoy.helpers" do
+       Ahoy.include_helpers
+     end
+
     initializer "ahoy.middleware", after: "sprockets.environment" do |app|
       if Ahoy.throttle
         require "ahoy/throttle"
